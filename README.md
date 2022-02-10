@@ -176,31 +176,33 @@ To do it, follow these steps:
 
 ## Configuration
 
-| Name                       | Description                                                                                                                        | Default Value                           |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
-| `linter`                   | [Official Qodana Docker image](https://www.jetbrains.com/help/qodana/docker-images.html). Required.                                | `jetbrains/qodana-jvm-community:latest` |
-| `project-dir`              | The project's root directory to be analyzed. Optional                                                                              | `${{ github.workspace }}`               |
-| `results-dir`              | Directory to store the analysis results. Optional.                                                                                 | `${{ runner.temp }}/qodana/results`     |
-| `cache-dir`                | Directory to store Qodana caches. Optional.                                                                                        | `${{ runner.temp }}/qodana/caches`      |
-| `idea-config-dir`          | IntelliJ IDEA configuration directory. Optional.                                                                                   | -                                       |
-| `gradle-settings-path`     | Provide path to gradle.properties file. An example: "/your/custom/path/gradle.properties". Optional.                               | -                                       |
-| `additional-volumes`       | Mount additional volumes to Docker container. Multiline input variable: specify multiple values with newlines. Optional.                                                                            | -                                       |
-| `additional-env-variables` | Pass additional environment variables to docker container. Multiline input variable: specify multiple values with newlines. Optional.                                                               | -                                       |
-| `fail-threshold`           | Set the number of problems that will serve as a quality gate. If this number is reached, the pipeline run is terminated. Optional. | -                                       |
-| `inspected-dir`            | Directory to be inspected. If not specified, the whole project is inspected by default. Optional.                                  | -                                       |
-| `baseline-path`            | Run in baseline mode. Provide the path to an existing SARIF report to be used in the baseline state calculation. Optional.         | -                                       |
-| `baseline-include-absent`  | Include the results from the baseline absent in the current Qodana run in the output report. Optional.                             | `false`                                 |
-| `changes`                  | Inspect uncommitted changes and report new problems. Optional.                                                                     | `false`                                 |
-| `script`                   | Override the default docker scenario. Optional.                                                                                    | -                                       |
-| `profile-name`             | Name of a profile defined in the project. Optional.                                                                                | -                                       |
-| `profile-path`             | Absolute path to the profile file. Optional.                                                                                       | -                                       |
-| `token`                    | Qodana Cloud token, if specified, the report will be sent to Qodana Cloud. Optional.                                                  | -                                       |
-| `upload-result`            | Upload Qodana results as an artifact to the job. Optional.                                                                         | `true`                                  |
-| `artifact-name`            | Specify Qodana results artifact name, used for results uploading. Optional.                                                        | `Qodana report`                                  |
-| `use-caches`               | Utilize GitHub caches for Qodana runs. Optional.                                                                                   | `true`                                  |
-| `additional-cache-hash`    | Allows customizing the generated cache hash. Optional.                                                                             |                                         `${{ github.sha }}` |
-| `use-annotations`          | Use annotation to mark the results in the GitHub user interface. Optional.                                                         | `true`                                  |
-| `github-token`             | GitHub token to be used for uploading results. Optional.                                                                           | `${{ github.token }}`                   |
+| Name                      | Description                                                                                                                         | Default Value                           |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| `linter`                  | [Official Qodana Docker image](https://www.jetbrains.com/help/qodana/docker-images.html). Required.                                 | `jetbrains/qodana-jvm-community:latest` |
+| `project-dir`             | The project's root directory to be analyzed. Optional                                                                               | `${{ github.workspace }}`               |
+| `results-dir`             | Directory to store the analysis results. Optional.                                                                                  | `${{ runner.temp }}/qodana/results`     |
+| `cache-dir`               | Directory to store Qodana caches. Optional.                                                                                         | `${{ runner.temp }}/qodana/caches`      |
+| `idea-config-dir`         | IntelliJ IDEA configuration directory. Optional.                                                                                    | -                                       |
+| `gradle-settings-path`    | Provide path to gradle.properties file. An example: "/your/custom/path/gradle.properties". Optional.                                | -                                       |
+| `additional-volumes`      | Mount additional volumes to Docker container. Multiline input variable: specify multiple values with newlines. Optional.            | -                                       |
+| `additional-env-variables` | Pass additional environment variables to docker container. Multiline input variable: specify multiple values with newlines. Optional. | -                                       |
+| `fail-threshold`          | Set the number of problems that will serve as a quality gate. If this number is reached, the pipeline run is terminated. Optional.  | -                                       |
+| `inspected-dir`           | Directory to be inspected. If not specified, the whole project is inspected by default. Optional.                                   | -                                       |
+| `baseline-path`           | Run in baseline mode. Provide the path to an existing SARIF report to be used in the baseline state calculation. Optional.          | -                                       |
+| `baseline-include-absent` | Include the results from the baseline absent in the current Qodana run in the output report. Optional.                              | `false`                                 |
+| `changes`                 | Inspect uncommitted changes and report new problems. Optional.                                                                      | `false`                                 |
+| `script`                  | Override the default docker scenario. Optional.                                                                                     | -                                       |
+| `profile-name`            | Name of a profile defined in the project. Optional.                                                                                 | -                                       |
+| `profile-path`            | Absolute path to the profile file. Optional.                                                                                        | -                                       |
+| `token`                   | Qodana Cloud token, if specified, the report will be sent to Qodana Cloud. Optional.                                                | -                                       |
+| `upload-result`           | Upload Qodana results as an artifact to the job. Optional.                                                                          | `true`                                  |
+| `artifact-name`           | Specify Qodana results artifact name, used for results uploading. Optional.                                                         | `Qodana report`                         |
+| `use-caches`              | Utilize GitHub caches for Qodana runs. Optional.                                                                                    | `true`                                  |
+| `additional-cache-hash`   | Allows customizing the generated cache hash. Optional.                                                                              | `${{ github.sha }}`                     |
+| `use-annotations`         | Use annotation to mark the results in the GitHub user interface. Optional.                                                          | `true`                                  |
+| `github-token`            | GitHub token to be used for uploading results. Optional.                                                                            | `${{ github.token }}`                   |
+| `use-debug-logs`           | Enable detailed Qodana output. Optional.                                                                                            | `false`                                  |
+
 
 ## Issue Tracker
 

@@ -111,7 +111,7 @@ function defaultDockerRunCommandFixture(): string[] {
     '10',
     '-n',
     'qodana.recommended',
-    '--property=idea.log.config.file=info.xml',
+    '--property=idea.log.config.file=info.xml'
   )
   return args
 }
