@@ -101,5 +101,8 @@ export function getQodanaRunArgs(inputs: Inputs): string[] {
   if (inputs.token !== '') {
     args.push('--send-report', '-t', inputs.token)
   }
+  if (inputs.useDebugLogs) {
+    args.push('--property=idea.log.config.file=info.xml')
+  }
   return args
 }

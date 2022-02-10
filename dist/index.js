@@ -286,7 +286,8 @@ function getInputs() {
         artifactName: core.getInput('artifact-name'),
         useCaches: core.getBooleanInput('use-caches'),
         githubToken: core.getInput('github-token'),
-        useAnnotations: core.getBooleanInput('use-annotations')
+        useAnnotations: core.getBooleanInput('use-annotations'),
+        useDebugLogs: core.getBooleanInput('use-debug-logs')
     };
 }
 exports.getInputs = getInputs;
@@ -426,6 +427,9 @@ function getQodanaRunArgs(inputs) {
     }
     if (inputs.token !== '') {
         args.push('--send-report', '-t', inputs.token);
+    }
+    if (inputs.useDebugLogs) {
+      args.push('--property=idea.log.config.file=info.xml');
     }
     return args;
 }
@@ -2138,7 +2142,7 @@ function getUploadSpecification(artifactName, rootDirectory, artifactFiles) {
     rootDirectory = path_1.resolve(rootDirectory);
     /*
        Example to demonstrate behavior
-       
+
        Input:
          artifactName: my-artifact
          rootDirectory: '/home/user/files/plz-upload'
@@ -2147,7 +2151,7 @@ function getUploadSpecification(artifactName, rootDirectory, artifactFiles) {
            '/home/user/files/plz-upload/file2.txt',
            '/home/user/files/plz-upload/dir/file3.txt'
          ]
-       
+
        Output:
          specifications: [
            ['/home/user/files/plz-upload/file1.txt', 'my-artifact/file1.txt'],
@@ -2172,7 +2176,7 @@ function getUploadSpecification(artifactName, rootDirectory, artifactFiles) {
             /*
               uploadFilePath denotes where the file will be uploaded in the file container on the server. During a run, if multiple artifacts are uploaded, they will all
               be saved in the same container. The artifact name is used as the root directory in the container to separate and distinguish uploaded artifacts
-      
+
               path.join handles all the following cases and would return 'artifact-name/file-to-upload.txt
                 join('artifact-name/', 'file-to-upload.txt')
                 join('artifact-name/', '/file-to-upload.txt')
@@ -3404,7 +3408,7 @@ function retry(name, method, getStatusCode, maxAttempts = constants_1.DefaultRet
 exports.retry = retry;
 function retryTypedResponse(name, method, maxAttempts = constants_1.DefaultRetryAttempts, delay = constants_1.DefaultRetryDelay) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield retry(name, method, (response) => response.statusCode, maxAttempts, delay, 
+        return yield retry(name, method, (response) => response.statusCode, maxAttempts, delay,
         // If the error object contains the statusCode property, extract it and return
         // an ITypedResponse<T> so it can be processed by the retry logic.
         (error) => {
@@ -12126,7 +12130,7 @@ function createTokenCycler(credential, scopes, tokenCyclerOptions) {
             const tryGetAccessToken = () => credential.getToken(scopes, getTokenOptions);
             // Take advantage of promise chaining to insert an assignment to `token`
             // before the refresh can be considered done.
-            refreshWorker = beginRefresh(tryGetAccessToken, options.retryIntervalInMs, 
+            refreshWorker = beginRefresh(tryGetAccessToken, options.retryIntervalInMs,
             // If we don't have a token, then we should timeout immediately
             (_a = token === null || token === void 0 ? void 0 : token.expiresOnTimestamp) !== null && _a !== void 0 ? _a : Date.now())
                 .then((_token) => {
@@ -12764,7 +12768,7 @@ class ServiceClient {
      * @param credentials - The credentials used for authentication with the service.
      * @param options - The service client options that govern the behavior of the client.
      */
-    constructor(credentials, 
+    constructor(credentials,
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options */
     options) {
         if (!options) {
@@ -35084,7 +35088,7 @@ const fsCreateReadStream = fs.createReadStream;
  * append blob, or page blob.
  */
 class BlobClient extends StorageClient {
-    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions, 
+    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -36122,7 +36126,7 @@ class BlobClient extends StorageClient {
  * AppendBlobClient defines a set of operations applicable to append blobs.
  */
 class AppendBlobClient extends BlobClient {
-    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions, 
+    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -36374,7 +36378,7 @@ class AppendBlobClient extends BlobClient {
  * BlockBlobClient defines a set of operations applicable to block blobs.
  */
 class BlockBlobClient extends BlobClient {
-    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions, 
+    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -36989,7 +36993,7 @@ class BlockBlobClient extends BlobClient {
                 if (options.onProgress) {
                     options.onProgress({ loadedBytes: transferProgress });
                 }
-            }, 
+            },
             // concurrency should set a smaller value than maxConcurrency, which is helpful to
             // reduce the possibility when a outgoing handler waits for stream data, in
             // this situation, outgoing handlers are blocked.
@@ -37014,7 +37018,7 @@ class BlockBlobClient extends BlobClient {
  * PageBlobClient defines a set of operations applicable to page blobs.
  */
 class PageBlobClient extends BlobClient {
-    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions, 
+    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, blobNameOrOptions,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -37905,7 +37909,7 @@ class BatchHeaderFilterPolicyFactory {
  * @see https://docs.microsoft.com/en-us/rest/api/storageservices/blob-batch
  */
 class BlobBatchClient {
-    constructor(url, credentialOrPipeline, 
+    constructor(url, credentialOrPipeline,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -37937,7 +37941,7 @@ class BlobBatchClient {
     createBatch() {
         return new BlobBatch();
     }
-    async deleteBlobs(urlsOrBlobClients, credentialOrOptions, 
+    async deleteBlobs(urlsOrBlobClients, credentialOrOptions,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -37952,7 +37956,7 @@ class BlobBatchClient {
         }
         return this.submitBatch(batch);
     }
-    async setBlobsAccessTier(urlsOrBlobClients, credentialOrTier, tierOrOptions, 
+    async setBlobsAccessTier(urlsOrBlobClients, credentialOrTier, tierOrOptions,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -38044,7 +38048,7 @@ class BlobBatchClient {
  * A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
  */
 class ContainerClient extends StorageClient {
-    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName, 
+    constructor(urlOrConnectionString, credentialOrPipelineOrContainerName,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -39503,7 +39507,7 @@ function generateAccountSASQueryParameters(accountSASSignatureValues, sharedKeyC
  * to manipulate blob containers.
  */
 class BlobServiceClient extends StorageClient {
-    constructor(url, credentialOrPipeline, 
+    constructor(url, credentialOrPipeline,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -39535,7 +39539,7 @@ class BlobServiceClient extends StorageClient {
      *                                  `BlobEndpoint=https://myaccount.blob.core.windows.net/;QueueEndpoint=https://myaccount.queue.core.windows.net/;FileEndpoint=https://myaccount.file.core.windows.net/;TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sasString`
      * @param options - Optional. Options to configure the HTTP pipeline.
      */
-    static fromConnectionString(connectionString, 
+    static fromConnectionString(connectionString,
     // Legacy, no fix for eslint error without breaking. Disable it for this interface.
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     options) {
@@ -43082,7 +43086,7 @@ var DiagAPI = /** @class */ (function () {
                 // shortcut if logger not set
                 if (!logger)
                     return;
-                return logger[funcName].apply(logger, 
+                return logger[funcName].apply(logger,
                 // work around Function.prototype.apply types
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 arguments);
@@ -66491,7 +66495,7 @@ module.exports = JSON.parse('["ac","com.ac","edu.ac","gov.ac","net.ac","mil.ac",
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -66505,7 +66509,7 @@ module.exports = JSON.parse('["ac","com.ac","edu.ac","gov.ac","net.ac","mil.ac",
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
@@ -66514,24 +66518,24 @@ module.exports = JSON.parse('["ac","com.ac","edu.ac","gov.ac","net.ac","mil.ac",
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 		}
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
-/******/ 	
+/******/
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
 /******/ 	module.exports = __webpack_exports__;
-/******/ 	
+/******/
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

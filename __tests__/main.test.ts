@@ -77,7 +77,8 @@ function inputsDefaultFixture(): Inputs {
     useCaches: true,
     useAnnotations: true,
     githubToken: '',
-    token: ''
+    token: '',
+    useDebugLogs: true
   }
 }
 
@@ -109,7 +110,8 @@ function defaultDockerRunCommandFixture(): string[] {
     '--fail-threshold',
     '10',
     '-n',
-    'qodana.recommended'
+    'qodana.recommended',
+    '--property=idea.log.config.file=info.xml',
   )
   return args
 }

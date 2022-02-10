@@ -82,6 +82,10 @@ inputs:
     description: 'Use annotation to mark the results in the GitHub user interface'
     required: false
     default: "true"
+  use-debug-logs:
+    description: 'Enable more detailed logging in Qodana output'
+    required: false
+    default: "false"
   github-token:
     description: 'GitHub token to be used for uploading annotations'
     required: false

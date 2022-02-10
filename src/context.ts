@@ -27,6 +27,7 @@ export interface Inputs {
   useCaches: boolean
   githubToken: string
   useAnnotations: boolean
+  useDebugLogs: boolean
 }
 
 /**
@@ -57,6 +58,7 @@ export function getInputs(): Inputs {
     artifactName: core.getInput('artifact-name'),
     useCaches: core.getBooleanInput('use-caches'),
     githubToken: core.getInput('github-token'),
-    useAnnotations: core.getBooleanInput('use-annotations')
+    useAnnotations: core.getBooleanInput('use-annotations'),
+    useDebugLogs: core.getBooleanInput('use-debug-logs')
   }
 }
